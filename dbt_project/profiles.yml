@@ -1,0 +1,7 @@
+march_madness:
+  outputs:
+    dev:
+      type: duckdb
+      path: '../data/madness.duckdb'
+      schema: staging
+  target: dev

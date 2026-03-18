@@ -1,0 +1,26 @@
+# Environment
+.env
+
+# Database
+data/*.duckdb
+data/*.duckdb.wal
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# Model artifacts
+modeling/artifacts/
+
+# dbt
+dbt_project/target/
+dbt_project/logs/
+dbt_project/dbt_packages/
+
+# Kaggle data files
+ingestion/kaggle_data/
+
+# OS
+.DS_Store

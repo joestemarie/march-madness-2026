@@ -1,0 +1,23 @@
+name: 'march_madness'
+version: '1.0.0'
+config-version: 2
+
+profile: 'march_madness'
+
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+seeds:
+  march_madness:
+    team_crosswalk:
+      +column_types:
+        kaggle_team_id: integer
+        kaggle_team_name: varchar
+        kenpom_team_name: varchar
+        barttorvik_team_name: varchar
+        canonical_name: varchar

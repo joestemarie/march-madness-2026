@@ -1,0 +1,54 @@
+version: 2
+
+models:
+  - name: stg_kenpom_ratings
+    description: "Cleaned KenPom team ratings by season, joined to crosswalk"
+    columns:
+      - name: season
+        tests:
+          - not_null
+      - name: team_name
+        tests:
+          - not_null
+
+  - name: stg_kenpom_four_factors
+    description: "Cleaned KenPom four factors by season, joined to crosswalk"
+    columns:
+      - name: season
+        tests:
+          - not_null
+      - name: team_name
+        tests:
+          - not_null
+
+  - name: stg_kaggle_tourney_results
+    description: "Tournament game results with round derived from DayNum"
+    columns:
+      - name: season
+        tests:
+          - not_null
+      - name: team_id_winner
+        tests:
+          - not_null
+      - name: team_id_loser
+        tests:
+          - not_null
+
+  - name: stg_kaggle_seeds
+    description: "Tournament seeds parsed into region and seed number"
+    columns:
+      - name: season
+        tests:
+          - not_null
+      - name: team_id
+        tests:
+          - not_null
+      - name: seed_number
+        tests:
+          - not_null
+
+  - name: stg_barttorvik_ratings
+    description: "Barttorvik T-Rank ratings (not used in MVP model)"
+
+  - name: stg_barttorvik_game_predictions
+    description: "Barttorvik game predictions for tournament matchups (not used in MVP model)"
