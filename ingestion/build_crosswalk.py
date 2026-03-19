@@ -21,7 +21,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-CROSSWALK_PATH = Path(__file__).resolve().parent.parent / "seeds" / "team_crosswalk.csv"
+CROSSWALK_PATH = Path(__file__).resolve().parent.parent / "dbt_project" / "seeds" / "team_crosswalk.csv"
 
 
 def get_source_teams(conn) -> dict[str, list[str]]:
