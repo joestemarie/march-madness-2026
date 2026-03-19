@@ -23,5 +23,11 @@ dbt_project/.user.yml
 # Kaggle data files
 ingestion/kaggle_data/
 
+# Kalshi private key
+*.pem
+
+# Forecasting artifacts
+forecasting/artifacts/
+
 # OS
 .DS_Store

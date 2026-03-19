@@ -21,3 +21,9 @@ seeds:
         kenpom_team_name: varchar
         barttorvik_team_name: varchar
         canonical_name: varchar
+    manual_seeds:
+      +column_types:
+        season: integer
+        kenpom_team_name: varchar
+        seed_number: integer
+        region: varchar

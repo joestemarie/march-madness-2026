@@ -1,4 +1,4 @@
-.PHONY: setup download-kaggle ingest ingest-kaggle ingest-kenpom ingest-barttorvik crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean
+.PHONY: setup download-kaggle ingest ingest-kaggle ingest-kenpom ingest-barttorvik ingest-kalshi crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean train calibrate evaluate model predict edges allocate forecast execute
 
 # -- Setup --
 setup:
@@ -11,7 +11,7 @@ download-kaggle:
 	unzip -o ingestion/kaggle_data/*.zip -d ingestion/kaggle_data/
 
 # -- Ingestion (run in order) --
-ingest: ingest-kaggle ingest-kenpom ingest-barttorvik
+ingest: ingest-kaggle ingest-kenpom ingest-barttorvik ingest-kalshi
 
 ingest-kaggle:
 	uv run python ingestion/ingest_kaggle.py
@@ -24,6 +24,9 @@ ingest-barttorvik:
 
 ingest-barttorvik-no-predictions:
 	uv run python ingestion/ingest_barttorvik.py --skip-predictions
+
+ingest-kalshi:
+	uv run python ingestion/ingest_kalshi.py
 
 crosswalk:
 	uv run python ingestion/build_crosswalk.py
@@ -53,6 +56,36 @@ lint-fix:
 # -- Sanity checks --
 check:
 	./scripts/check.sh
+
+# -- Modeling --
+train:
+	uv run python modeling/train.py $(FEATURE_SET)
+
+calibrate:
+	uv run python modeling/calibration.py
+
+evaluate:
+	uv run python modeling/evaluate.py
+
+model: train calibrate evaluate
+
+# -- Forecasting --
+predict:
+	uv run python forecasting/predict.py --active-only
+
+edges:
+	uv run python forecasting/edge.py
+
+allocate:
+	uv run python forecasting/allocate.py
+
+forecast: ingest-kalshi predict edges allocate
+
+execute:
+	uv run python forecasting/execute.py
+
+execute-live:
+	uv run python forecasting/execute.py --live
 
 # -- Cleanup --
 clean:

@@ -35,15 +35,15 @@ models:
           - not_null
 
   - name: stg_kaggle_seeds
-    description: "Tournament seeds parsed into region and seed number"
+    description: "Tournament seeds from Kaggle (historical) + manual seeds (current year)"
     columns:
       - name: season
         tests:
           - not_null
-      - name: team_id
+      - name: seed_number
         tests:
           - not_null
-      - name: seed_number
+      - name: kenpom_team_name
         tests:
           - not_null
 
