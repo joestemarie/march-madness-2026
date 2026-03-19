@@ -22,6 +22,9 @@ jobs:
       - name: Install dependencies
         run: uv sync
 
+      - name: Lint SQL
+        run: make lint
+
       - name: Validate Python imports
         run: |
           uv run python -c "from ingestion.utils import get_connection, load_dataframe"

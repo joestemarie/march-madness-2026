@@ -1,4 +1,4 @@
-.PHONY: setup ingest ingest-kaggle ingest-kenpom ingest-barttorvik crosswalk dbt dbt-seed dbt-build dbt-test dbt-run check clean
+.PHONY: setup ingest ingest-kaggle ingest-kenpom ingest-barttorvik crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean
 
 # -- Setup --
 setup:
@@ -36,6 +36,10 @@ dbt-test:
 
 dbt-run:
 	cd dbt_project && uv run dbt run
+
+# -- Lint --
+lint:
+	./scripts/lint_sql.sh
 
 # -- Sanity checks --
 check:

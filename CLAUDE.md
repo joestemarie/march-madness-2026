@@ -30,3 +30,8 @@ make clean                    # Delete DuckDB + dbt artifacts
 - Team A is always the higher seed (lower number) in matchups
 - All ingestion scripts are idempotent (safe to re-run)
 - KenPom is primary data source; Barttorvik is supplementary
+
+## SQL Style
+- **Leading commas** — commas go at the start of the line, not the end
+- **No terminal CTE** — the final `select` should be inline, not `select * from some_cte`
+- Run `make lint` to check; CI enforces both rules
