@@ -72,6 +72,7 @@ def allocate_bets(
             "bet_team": r["bet_team"],
             "bet_side": r["bet_side"],
             "model_prob": r["model_prob"],
+            "seed_prob": r.get("seed_prob"),
             "kalshi_price": r["kalshi_price"],
             "edge": r["edge"],
             "confidence": r["confidence"],
@@ -94,7 +95,15 @@ def allocate_bets(
         bet_df["expected_profit"] = (bet_df["expected_profit"] * scale).round(2)
         print(f"Scaled bets by {scale:.2f}x to fit bankroll")
 
-    return bet_df.sort_values("edge", ascending=False)
+    bet_df = bet_df.sort_values("edge", ascending=False)
+
+    # Round probability columns to 4 decimal places for clean CSV export
+    for col in ["model_prob", "seed_prob", "kalshi_price", "edge",
+                "kelly_full", "kelly_fraction"]:
+        if col in bet_df.columns:
+            bet_df[col] = bet_df[col].round(4)
+
+    return bet_df
 
 
 def simulate_outcomes(bets: pd.DataFrame, n_sims: int = 10000) -> dict:
@@ -168,13 +177,14 @@ def main():
     print(f"Bankroll: ${args.bankroll:.0f} | Kelly: {args.kelly_fraction:.0%} | "
           f"Min: ${args.min_bet:.0f} | Max: ${args.bankroll * args.max_bet_pct:.0f}")
     print(f"{'='*95}")
-    print(f"{'Matchup':<30} {'Bet On':<16} {'Model':>6} {'Kalshi':>7} {'Edge':>6} "
+    print(f"{'Matchup':<30} {'Bet On':<16} {'Model':>6} {'Seed':>6} {'Kalshi':>7} {'Edge':>6} "
           f"{'Kelly':>6} {'Bet':>7} {'E[P]':>7}")
-    print(f"{'-'*30} {'-'*16} {'-'*6} {'-'*7} {'-'*6} {'-'*6} {'-'*7} {'-'*7}")
+    print(f"{'-'*30} {'-'*16} {'-'*6} {'-'*6} {'-'*7} {'-'*6} {'-'*6} {'-'*7} {'-'*7}")
     for _, r in bets.iterrows():
+        seed_str = f"{r['seed_prob']:>5.1%}" if pd.notna(r.get("seed_prob")) else "  N/A"
         print(
             f"{r['matchup']:<30} {r['bet_team']:<16} "
-            f"{r['model_prob']:>5.1%} {r['kalshi_price']:>6.1%} {r['edge']:>+5.1%} "
+            f"{r['model_prob']:>5.1%} {seed_str} {r['kalshi_price']:>6.1%} {r['edge']:>+5.1%} "
             f"{r['kelly_fraction']:>5.1%} ${r['bet_amount']:>6.2f} ${r['expected_profit']:>6.2f}"
         )
 

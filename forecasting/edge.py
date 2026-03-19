@@ -60,6 +60,13 @@ def compute_edges(df: pd.DataFrame, threshold: float) -> pd.DataFrame:
         else:
             confidence = "none"
 
+        # Seed baseline probability for the bet side
+        seed_a = r.get("seed_baseline_prob", None)
+        if seed_a is not None and bet_side == "team_b":
+            seed_prob = 1 - seed_a
+        else:
+            seed_prob = seed_a
+
         rows.append({
             "event_ticker": r["event_ticker"],
             "team_a": r["team_a_kalshi"],
@@ -67,11 +74,13 @@ def compute_edges(df: pd.DataFrame, threshold: float) -> pd.DataFrame:
             "team_a_seed": r.get("team_a_seed"),
             "team_b_seed": r.get("team_b_seed"),
             "model_prob_a": model_a,
+            "seed_baseline_prob_a": seed_a,
             "kalshi_prob_a": kalshi_a,
             "kalshi_prob_b": kalshi_b,
             "bet_team": bet_team,
             "bet_side": bet_side,
             "model_prob": model_prob,
+            "seed_prob": seed_prob,
             "kalshi_price": kalshi_prob,
             "edge": edge,
             "edge_pct": edge * 100,
@@ -117,27 +126,29 @@ def main():
         print("No actionable edges found above threshold.")
     else:
         print(f"Found {len(actionable)} actionable edges:\n")
-        print(f"{'Matchup':<35} {'Bet On':<18} {'Model':>6} {'Kalshi':>7} {'Edge':>7} {'Conf':<6}")
-        print(f"{'-'*35} {'-'*18} {'-'*6} {'-'*7} {'-'*7} {'-'*6}")
+        print(f"{'Matchup':<35} {'Bet On':<18} {'Model':>6} {'Seed':>6} {'Kalshi':>7} {'Edge':>7} {'Conf':<6}")
+        print(f"{'-'*35} {'-'*18} {'-'*6} {'-'*6} {'-'*7} {'-'*7} {'-'*6}")
         for _, r in actionable.iterrows():
             matchup = f"{r['team_a']} vs {r['team_b']}"
+            seed_str = f"{r['seed_prob']:>5.1%}" if pd.notna(r.get("seed_prob")) else "  N/A"
             print(
                 f"{matchup:<35} {r['bet_team']:<18} "
-                f"{r['model_prob']:>5.1%} {r['kalshi_price']:>6.1%} "
+                f"{r['model_prob']:>5.1%} {seed_str} {r['kalshi_price']:>6.1%} "
                 f"{r['edge']:>+6.1%} {r['confidence']:<6}"
             )
 
     # Also show all games sorted by edge
-    print(f"\n{'='*90}")
+    print(f"\n{'='*97}")
     print("ALL GAMES (sorted by edge)")
-    print(f"{'='*90}")
-    print(f"{'Matchup':<35} {'Bet On':<18} {'Model':>6} {'Kalshi':>7} {'Edge':>7}")
-    print(f"{'-'*35} {'-'*18} {'-'*6} {'-'*7} {'-'*7}")
+    print(f"{'='*97}")
+    print(f"{'Matchup':<35} {'Bet On':<18} {'Model':>6} {'Seed':>6} {'Kalshi':>7} {'Edge':>7}")
+    print(f"{'-'*35} {'-'*18} {'-'*6} {'-'*6} {'-'*7} {'-'*7}")
     for _, r in edges.sort_values("edge", ascending=False).iterrows():
         matchup = f"{r['team_a']} vs {r['team_b']}"
+        seed_str = f"{r['seed_prob']:>5.1%}" if pd.notna(r.get("seed_prob")) else "  N/A"
         print(
             f"{matchup:<35} {r['bet_team']:<18} "
-            f"{r['model_prob']:>5.1%} {r['kalshi_price']:>6.1%} "
+            f"{r['model_prob']:>5.1%} {seed_str} {r['kalshi_price']:>6.1%} "
             f"{r['edge']:>+6.1%}"
         )
 

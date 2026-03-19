@@ -340,9 +340,34 @@ def compute_features(df: pd.DataFrame, round_num: int) -> pd.DataFrame:
     return df
 
 
+def seed_baseline_probs(
+    df: pd.DataFrame,
+    conn: duckdb.DuckDBPyConnection,
+) -> pd.Series:
+    """Compute seed-only baseline P(team_a_wins) from historical win rates.
+
+    Uses all historical data (the model was trained on all past seasons,
+    so the seed baseline should too for a fair comparison).
+    """
+    loyo_path = MODEL_DIR / "loyo_predictions.csv"
+    if loyo_path.exists():
+        hist = pd.read_csv(loyo_path)
+    else:
+        hist = conn.execute("SELECT * FROM staging.model_features").fetchdf()
+
+    rates = hist.groupby(["team_a_seed", "team_b_seed"])["team_a_won"].mean().to_dict()
+    global_rate = hist["team_a_won"].mean()
+
+    return df.apply(
+        lambda r: rates.get((int(r["team_a_seed"]), int(r["team_b_seed"])), global_rate),
+        axis=1,
+    )
+
+
 def generate_predictions(
     df: pd.DataFrame,
     model_dict: dict,
+    conn: duckdb.DuckDBPyConnection,
 ) -> pd.DataFrame:
     """Generate P(team_a_wins) for each matchup using the trained model."""
     features = model_dict["features"]
@@ -352,6 +377,7 @@ def generate_predictions(
     probs = pipeline.predict_proba(X)[:, 1]
     df = df.copy()
     df["model_prob_a_wins"] = probs
+    df["seed_baseline_prob"] = seed_baseline_probs(df, conn)
     return df
 
 
@@ -409,7 +435,7 @@ def main():
     featured = compute_features(seeded, args.round)
 
     # Generate predictions
-    predictions = generate_predictions(featured, model_dict)
+    predictions = generate_predictions(featured, model_dict, conn)
 
     # Select output columns
     output_cols = [
@@ -420,6 +446,7 @@ def main():
         "team_a_kenpom_rank", "team_b_kenpom_rank",
         "team_a_adj_em", "team_b_adj_em",
         "model_prob_a_wins",
+        "seed_baseline_prob",
         "team_a_implied_prob", "team_b_implied_prob",
         "status", "volume",
     ]
