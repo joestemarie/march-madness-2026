@@ -4,12 +4,15 @@ Usage:
     uv run python ingestion/ingest_kenpom.py [--start-year 2002] [--end-year 2026]
 
 Requires KENPOM_API_KEY in .env file.
+
+API docs: https://kenpom.com (provided with API key purchase)
+Base URL: https://kenpom.com/api.php?endpoint=...
+Auth: Bearer token in Authorization header
 """
 
 import argparse
 import logging
 import os
-import sys
 import time
 from datetime import datetime
 
@@ -28,51 +31,41 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 KENPOM_API_KEY = os.environ.get("KENPOM_API_KEY", "")
-BASE_URL = "https://kenpom.com/api/v1"
+BASE_URL = "https://kenpom.com/api.php"
 REQUEST_DELAY = 0.5  # seconds between requests
 
 
 def kenpom_get(endpoint: str, params: dict | None = None) -> list[dict] | dict:
-    """Make an authenticated GET request to the KenPom API.
-
-    NOTE: The base URL and endpoint paths below are guesses from the KenPom
-    registration page. If you get 403 errors, check the API docs that came
-    with your key and update BASE_URL / endpoint paths accordingly.
-    """
+    """Make an authenticated GET request to the KenPom API."""
     if not KENPOM_API_KEY:
         raise RuntimeError("KENPOM_API_KEY not set. Add it to your .env file.")
     headers = {"Authorization": f"Bearer {KENPOM_API_KEY}"}
-    url = f"{BASE_URL}/{endpoint}"
-    logger.info("GET %s params=%s", url, params)
-    resp = httpx.get(url, headers=headers, params=params, timeout=30)
-    if resp.status_code == 403:
-        logger.error(
-            "403 Forbidden from KenPom API. Check that:\n"
-            "  1. KENPOM_API_KEY in .env is correct\n"
-            "  2. BASE_URL (%s) matches your API docs\n"
-            "  3. The endpoint path '%s' is correct\n"
-            "  4. Your API subscription is active",
-            BASE_URL, endpoint,
-        )
+    query_params = {"endpoint": endpoint}
+    if params:
+        query_params.update(params)
+    logger.info("GET %s endpoint=%s params=%s", BASE_URL, endpoint, params)
+    resp = httpx.get(BASE_URL, headers=headers, params=query_params, timeout=30)
     resp.raise_for_status()
     return resp.json()
 
 
 def fetch_ratings(seasons: range) -> pd.DataFrame:
-    """Fetch team ratings for all requested seasons."""
+    """Fetch team ratings for all requested seasons.
+
+    API response fields include: TeamName, ConfShort, AdjEM, AdjOE, AdjDE,
+    AdjTempo, Luck, SOS, SOSO, SOSD, NCSOS, RankAdjEM, Season, etc.
+    """
     all_rows = []
     for year in seasons:
         try:
-            data = kenpom_get("ratings", {"season": year})
+            data = kenpom_get("ratings", {"y": year})
             if isinstance(data, list):
-                for row in data:
-                    row["season"] = year
                 all_rows.extend(data)
             else:
                 logger.warning("Unexpected response shape for ratings season %d", year)
         except httpx.HTTPStatusError as e:
-            if e.response.status_code == 404:
-                logger.warning("No ratings data for season %d (404), skipping", year)
+            if e.response.status_code in (404, 400):
+                logger.warning("No ratings data for season %d (%d), skipping", year, e.response.status_code)
             else:
                 raise
         time.sleep(REQUEST_DELAY)
@@ -80,24 +73,22 @@ def fetch_ratings(seasons: range) -> pd.DataFrame:
 
 
 def fetch_four_factors(seasons: range) -> pd.DataFrame:
-    """Fetch four factors data for all requested seasons."""
+    """Fetch four factors data for all requested seasons.
+
+    API response fields include: TeamName, eFG_Pct, TO_Pct, OR_Pct, FT_Rate,
+    DeFG_Pct, DTO_Pct, DOR_Pct, DFT_Rate, Season, etc.
+    """
     all_rows = []
     for year in seasons:
         try:
-            data = kenpom_get("fourfactors", {"season": year})
+            data = kenpom_get("four-factors", {"y": year})
             if isinstance(data, list):
-                for row in data:
-                    row["season"] = year
                 all_rows.extend(data)
             else:
-                logger.warning(
-                    "Unexpected response shape for fourfactors season %d", year
-                )
+                logger.warning("Unexpected response shape for four-factors season %d", year)
         except httpx.HTTPStatusError as e:
-            if e.response.status_code == 404:
-                logger.warning(
-                    "No four factors data for season %d (404), skipping", year
-                )
+            if e.response.status_code in (404, 400):
+                logger.warning("No four factors data for season %d (%d), skipping", year, e.response.status_code)
             else:
                 raise
         time.sleep(REQUEST_DELAY)
