@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Validate Python imports
+        run: |
+          uv run python -c "from ingestion.utils import get_connection, load_dataframe"
+          uv run python -c "from ingestion.ingest_kaggle import main"
+          uv run python -c "from ingestion.ingest_kenpom import main"
+          uv run python -c "from ingestion.ingest_barttorvik import main"
+
+      - name: Validate dbt project
+        run: cd dbt_project && uv run dbt parse
+
+  data-checks:
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('ingestion/kaggle_data/MNCAATourneyCompactResults.csv') != '' }}
+    needs: validate
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Ingest Kaggle data
+        run: make ingest-kaggle
+
+      - name: Build dbt models
+        run: make dbt
+
+      - name: Run sanity checks
+        run: make check
