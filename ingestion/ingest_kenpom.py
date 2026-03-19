@@ -65,7 +65,7 @@ def fetch_ratings(seasons: range) -> pd.DataFrame:
                 logger.warning("Unexpected response shape for ratings season %d", year)
         except httpx.HTTPStatusError as e:
             if e.response.status_code in (404, 400):
-                logger.warning("No ratings data for season %d (%d), skipping", year, e.response.status_code)
+                logger.debug("No ratings data for season %d (%d), skipping", year, e.response.status_code)
             else:
                 raise
         time.sleep(REQUEST_DELAY)
@@ -88,7 +88,7 @@ def fetch_four_factors(seasons: range) -> pd.DataFrame:
                 logger.warning("Unexpected response shape for four-factors season %d", year)
         except httpx.HTTPStatusError as e:
             if e.response.status_code in (404, 400):
-                logger.warning("No four factors data for season %d (%d), skipping", year, e.response.status_code)
+                logger.debug("No four factors data for season %d (%d), skipping", year, e.response.status_code)
             else:
                 raise
         time.sleep(REQUEST_DELAY)
