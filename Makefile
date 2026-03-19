@@ -39,10 +39,10 @@ dbt-run:
 
 # -- Lint --
 lint:
-	uv run --extra lint sqlfluff lint dbt_project/models/
+	uv run sqlfluff lint dbt_project/models/
 
 lint-fix:
-	uv run --extra lint sqlfluff fix dbt_project/models/
+	uv run sqlfluff fix dbt_project/models/
 
 # -- Sanity checks --
 check:
