@@ -6,6 +6,7 @@ setup:
 
 # -- Download --
 download-kaggle:
+	set -a && [ -f .env ] && . ./.env; set +a && \
 	uv run kaggle competitions download -c march-machine-learning-mania-2025 -p ingestion/kaggle_data/
 	unzip -o ingestion/kaggle_data/*.zip -d ingestion/kaggle_data/
 

@@ -3,7 +3,7 @@
 ## Quick Start
 ```bash
 make setup                    # Install dependencies
-make download-kaggle          # Download Kaggle CSVs (needs ~/.kaggle/kaggle.json)
+make download-kaggle          # Download Kaggle CSVs (needs KAGGLE_API_TOKEN in .env)
 # Add KENPOM_API_KEY to .env
 make ingest-kaggle            # Run first (no API key needed)
 make ingest-kenpom            # Requires KENPOM_API_KEY in .env
