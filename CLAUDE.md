@@ -5,21 +5,15 @@
 make setup                    # Install dependencies
 # Place Kaggle CSVs in ingestion/kaggle_data/
 # Add KENPOM_API_KEY to .env
-make all                      # Full pipeline: setup → ingest → dbt
-make check-counts             # Verify row counts
-```
-
-### Individual Steps
-```bash
 make ingest-kaggle            # Run first (no API key needed)
 make ingest-kenpom            # Requires KENPOM_API_KEY in .env
 make ingest-barttorvik        # Requires CBBDATA_API_KEY in .env (optional)
 make dbt                      # Seed crosswalk + build dbt models
+make check                    # Verify row counts + win rates by seed
 ```
 
 ### Useful Commands
 ```bash
-make check-seeds              # Win rates by seed matchup (sanity check)
 make dbt-test                 # Run dbt tests only
 make crosswalk                # Rebuild team name crosswalk via fuzzy matching
 make clean                    # Delete DuckDB + dbt artifacts
