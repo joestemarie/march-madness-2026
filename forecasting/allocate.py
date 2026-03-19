@@ -106,25 +106,36 @@ def allocate_bets(
     return bet_df
 
 
-def simulate_outcomes(bets: pd.DataFrame, n_sims: int = 10000) -> dict:
-    """Simple Monte Carlo simulation of bet outcomes."""
+def simulate_outcomes(bets: pd.DataFrame, n_sims: int = 10000, prob_haircut: float = 0.0) -> dict:
+    """Monte Carlo simulation of bet outcomes.
+
+    Args:
+        prob_haircut: Reduce each model_prob by this amount (e.g., 0.05 = 5pt
+            pessimistic adjustment). Probabilities are floored at 0.01.
+    """
     rng = np.random.default_rng(42)
     profits = np.zeros(n_sims)
 
     for _, bet in bets.iterrows():
-        # Each bet wins with probability model_prob
-        wins = rng.random(n_sims) < bet["model_prob"]
+        true_prob = max(0.01, bet["model_prob"] - prob_haircut)
+        wins = rng.random(n_sims) < true_prob
         # Win: gain (1 - kalshi_price) / kalshi_price * bet_amount
         # Lose: lose bet_amount
         payout_if_win = bet["bet_amount"] * (1 - bet["kalshi_price"]) / bet["kalshi_price"]
         profits += np.where(wins, payout_if_win, -bet["bet_amount"])
 
+    total_deployed = bets["bet_amount"].sum()
     return {
         "mean_profit": float(np.mean(profits)),
         "median_profit": float(np.median(profits)),
         "prob_positive": float(np.mean(profits > 0)),
-        "prob_lose_all": float(np.mean(profits <= -bets["bet_amount"].sum())),
+        "prob_cover_kenpom": float(np.mean(profits >= 20)),
+        "prob_double": float(np.mean(profits >= total_deployed)),
+        "prob_lose_all": float(np.mean(profits <= -total_deployed)),
         "p5": float(np.percentile(profits, 5)),
+        "p25": float(np.percentile(profits, 25)),
+        "p50": float(np.median(profits)),
+        "p75": float(np.percentile(profits, 75)),
         "p95": float(np.percentile(profits, 95)),
     }
 
@@ -170,6 +181,7 @@ def main():
 
     # Simulate outcomes
     sim = simulate_outcomes(bets)
+    sim_pessimistic = simulate_outcomes(bets, prob_haircut=0.05)
 
     # Print bet sheet
     print(f"\n{'='*95}")
@@ -198,13 +210,17 @@ def main():
     print(f"Capital deployed:     ${total_deployed:.2f} / ${args.bankroll:.0f}")
     print(f"Expected profit:      ${total_ev:.2f} ({total_ev/total_deployed*100:.1f}% ROI)")
     print(f"Breakeven (KenPom):   need ${20:.0f} profit to cover subscription")
-    print(f"\nMonte Carlo simulation ({10000} runs):")
-    print(f"  Mean profit:        ${sim['mean_profit']:.2f}")
-    print(f"  Median profit:      ${sim['median_profit']:.2f}")
-    print(f"  P(profit > 0):      {sim['prob_positive']:.1%}")
-    print(f"  5th percentile:     ${sim['p5']:.2f}")
-    print(f"  95th percentile:    ${sim['p95']:.2f}")
-    print(f"  P(lose all bets):   {sim['prob_lose_all']:.1%}")
+    for label, s in [("Base case (model probs)", sim),
+                      ("Pessimistic (model - 5pt)", sim_pessimistic)]:
+        print(f"\n  {label}:")
+        print(f"    Mean profit:        ${s['mean_profit']:.2f}")
+        print(f"    Median profit:      ${s['median_profit']:.2f}")
+        print(f"    P(profit > $0):     {s['prob_positive']:.1%}")
+        print(f"    P(cover KenPom):    {s['prob_cover_kenpom']:.1%}  (profit ≥ $20)")
+        print(f"    P(double up):       {s['prob_double']:.1%}  (profit ≥ ${total_deployed:.0f})")
+        print(f"    P(lose all bets):   {s['prob_lose_all']:.1%}")
+        print(f"    5th / 25th / 50th / 75th / 95th percentile:")
+        print(f"      ${s['p5']:.2f} / ${s['p25']:.2f} / ${s['p50']:.2f} / ${s['p75']:.2f} / ${s['p95']:.2f}")
 
 
 if __name__ == "__main__":
