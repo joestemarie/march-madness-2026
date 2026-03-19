@@ -11,4 +11,4 @@ with counts as (
 
 select *
 from counts
-where game_count < 28 or game_count > 36
+where game_count < 16 or game_count > 36

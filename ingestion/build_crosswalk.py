@@ -23,6 +23,24 @@ logger = logging.getLogger(__name__)
 
 CROSSWALK_PATH = Path(__file__).resolve().parent.parent / "dbt_project" / "seeds" / "team_crosswalk.csv"
 
+# Manual overrides for Kaggle names that can't be fuzzy-matched reliably.
+# Format: kaggle_name -> (kenpom_name, barttorvik_name)
+MANUAL_OVERRIDES: dict[str, tuple[str, str]] = {
+    "TAM C. Christi": ("Texas A&M Corpus Chris", "Texas A&M Corpus Chris"),
+    "FGCU": ("Florida Gulf Coast", "Florida Gulf Coast"),
+    "Central Conn": ("Central Connecticut", "Central Connecticut"),
+    "ULM": ("Louisiana Monroe", "Louisiana Monroe"),
+    "St Mary's CA": ("Saint Mary's", "Saint Mary's"),
+    "MS Valley St": ("Mississippi Valley St.", "Mississippi Valley St."),
+    "MTSU": ("Middle Tennessee", "Middle Tennessee"),
+    "WKU": ("Western Kentucky", "Western Kentucky"),
+    "NE Omaha": ("Nebraska Omaha", "Nebraska Omaha"),
+    "UT San Antonio": ("UTSA", "UTSA"),
+    "ETSU": ("East Tennessee St.", "East Tennessee St."),
+    "NC A&T": ("North Carolina A&T", "North Carolina A&T"),
+    "SIUE": ("SIU Edwardsville", "SIU Edwardsville"),
+}
+
 
 def get_source_teams(conn) -> dict[str, list[str]]:
     """Pull distinct team names from each ingested source."""
@@ -39,9 +57,9 @@ def get_source_teams(conn) -> dict[str, list[str]]:
 
     try:
         kenpom = conn.execute(
-            "SELECT DISTINCT team_name FROM raw.kenpom_ratings"
+            'SELECT DISTINCT "TeamName" FROM raw.kenpom_ratings'
         ).fetchdf()
-        teams["kenpom"] = list(kenpom["team_name"])
+        teams["kenpom"] = list(kenpom["TeamName"])
         logger.info("Found %d KenPom teams", len(kenpom))
     except Exception:
         logger.warning("No kenpom_ratings table found")
@@ -58,13 +76,16 @@ def get_source_teams(conn) -> dict[str, list[str]]:
     return teams
 
 
-def fuzzy_match(name: str, candidates: list[str], threshold: int = 85) -> str | None:
+def fuzzy_match(name: str, candidates: list[str], threshold: int = 78) -> str | None:
     """Find the best fuzzy match for a name in a list of candidates."""
     if not candidates:
         return None
-    result = process.extractOne(name, candidates, scorer=fuzz.ratio)
-    if result and result[1] >= threshold:
-        return result[0]
+    # Try exact first, then token_set_ratio (handles abbreviations well),
+    # then plain ratio as fallback
+    for scorer in [fuzz.token_set_ratio, fuzz.ratio]:
+        result = process.extractOne(name, candidates, scorer=scorer)
+        if result and result[1] >= threshold:
+            return result[0]
     return None
 
 
@@ -112,9 +133,12 @@ def build_crosswalk():
                 rows.append(match.iloc[0].to_dict())
                 continue
 
-        # Try fuzzy matching
-        kenpom_match = fuzzy_match(kaggle_name, kenpom_names)
-        barttorvik_match = fuzzy_match(kaggle_name, barttorvik_names)
+        # Try manual overrides first, then fuzzy matching
+        if kaggle_name in MANUAL_OVERRIDES:
+            kenpom_match, barttorvik_match = MANUAL_OVERRIDES[kaggle_name]
+        else:
+            kenpom_match = fuzzy_match(kaggle_name, kenpom_names)
+            barttorvik_match = fuzzy_match(kaggle_name, barttorvik_names)
 
         if not kenpom_match:
             unmatched_kenpom.append(kaggle_name)

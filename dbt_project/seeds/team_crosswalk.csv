@@ -1,191 +1,314 @@
 kaggle_team_id,kaggle_team_name,kenpom_team_name,barttorvik_team_name,canonical_name
-1104,Alabama,Alabama,Alabama,Alabama
-1112,Arizona,Arizona,Arizona,Arizona
-1113,Arizona St,Arizona St.,Arizona St.,Arizona St
+1141,C Michigan,Michigan,Michigan,C Michigan
+1208,Georgia,Georgia St.,Georgia St.,Georgia
+1214,Hampton,Hampton,Hampton,Hampton
+1219,High Point,High Point,High Point,High Point
+1254,LIU Brooklyn,LIU,LIU,LIU Brooklyn
+1260,Loyola-Chicago,Loyola Chicago,Loyola Chicago,Loyola-Chicago
+1261,LSU,LSU,LSU,LSU
+1267,Marshall,Marshall,Marshall,Marshall
+1268,Maryland,Maryland Eastern Shore,Maryland Eastern Shore,Maryland
+1277,Michigan St,Michigan,Michigan,Michigan St
+1281,Missouri,Missouri St.,Missouri St.,Missouri
+1295,N Dakota St,North Dakota St.,North Dakota St.,N Dakota St
+1300,NC Central,Central Arkansas,Central Arkansas,NC Central
+1353,Rutgers,Rutgers,Rutgers,Rutgers
+1369,SE Missouri St,Missouri,Missouri,SE Missouri St
+1396,Temple,Temple,Temple,Temple
+1402,Texas St,Texas,Texas,Texas St
+1422,UNC Greensboro,UNC Greensboro,UNC Greensboro,UNC Greensboro
+1453,WI Green Bay,Green Bay,Green Bay,WI Green Bay
+1457,Winthrop,Winthrop,Winthrop,Winthrop
+1460,Wright St,Wright St.,Wright St.,Wright St
+1117,Arkansas St,Arkansas,Arkansas,Arkansas St
 1120,Auburn,Auburn,Auburn,Auburn
-1124,Baylor,Baylor,Baylor,Baylor
-1139,Central Michigan,Central Michigan,Central Michigan,Central Michigan
-1140,Charleston Southern,Charleston Southern,Charleston Southern,Charleston Southern
-1143,Cincinnati,Cincinnati,Cincinnati,Cincinnati
-1147,Clemson,Clemson,Clemson,Clemson
-1153,Connecticut,UConn,Connecticut,Connecticut
-1155,Coppin St,Coppin St.,Coppin St.,Coppin St
-1158,Creighton,Creighton,Creighton,Creighton
-1163,Davidson,Davidson,Davidson,Davidson
-1166,Dayton,Dayton,Dayton,Dayton
-1172,Drake,Drake,Drake,Drake
-1173,Drexel,Drexel,Drexel,Drexel
+1150,Charlotte,Charlotte,Charlotte,Charlotte
+1198,Florida Intl,Florida,Florida,Florida Intl
+1216,Hartford,Hartford,Hartford,Hartford
+1250,Lehigh,Lehigh,Lehigh,Lehigh
+1265,Marist,Marist,Marist,Marist
+1276,Michigan,Western Michigan,Michigan St.,Michigan
+1279,Mississippi,Mississippi St.,Mississippi Valley St.,Mississippi
+1303,NE Omaha,Nebraska Omaha,Nebraska Omaha,NE Omaha
+1309,New Orleans,New Orleans,New Orleans,New Orleans
+1316,North Florida,Florida,Florida,North Florida
+1380,Southern Univ,Southern,Southern,Southern Univ
+1108,Alcorn St,Alcorn St.,Alcorn St.,Alcorn St
+1139,Butler,Butler,Butler,Butler
+1151,Chattanooga,Chattanooga,Chattanooga,Chattanooga
+1159,Colgate,Colgate,Colgate,Colgate
+1178,Detroit,Detroit Mercy,Detroit Mercy,Detroit
+1182,Duquesne,Duquesne,Duquesne,Duquesne
+1183,E Illinois,Illinois,Illinois,E Illinois
+1185,E Michigan,Michigan,Michigan,E Michigan
+1199,Florida St,Florida,Florida,Florida St
+1200,Fordham,Fordham,Fordham,Fordham
+1218,Hawaii,Hawaii,Hawaii,Hawaii
+1237,IUPUI,IUPUI,IUPUI,IUPUI
+1258,Loy Marymount,Loyola Marymount,Loyola Marymount,Loy Marymount
+1294,N Colorado,Colorado,Colorado,N Colorado
+1296,N Illinois,Illinois,Illinois,N Illinois
+1305,Nevada,Nevada,Nevada,Nevada
+1317,North Texas,Texas,Texas,North Texas
+1324,Oakland,Oakland,Oakland,Oakland
+1381,Southern Utah,Southern Utah,Southern Utah,Southern Utah
+1389,St Peter's,Saint Peter's,Saint Peter's,St Peter's
+1438,Virginia,Virginia,West Virginia,Virginia
+1439,Virginia Tech,Virginia,Virginia Tech,Virginia Tech
+1463,Yale,Yale,Yale,Yale
+1148,Central Conn,Central Connecticut,Central Connecticut,Central Conn
+1149,Charleston So,Charleston,Charleston,Charleston So
+1156,Cleveland St,Cleveland St.,Cleveland St.,Cleveland St
+1235,Iowa St,Iowa,Iowa,Iowa St
+1238,Jackson St,Jackson St.,Jackson St.,Jackson St
+1255,Longwood,Longwood,Longwood,Longwood
+1270,McNeese St,McNeese,McNeese St.,McNeese St
+1273,Mercer,Mercer,Mercer,Mercer
+1275,Miami OH,Miami OH,Miami OH,Miami OH
+1297,N Kentucky,Kentucky,Kentucky,N Kentucky
+1336,Penn St,Penn,Penn,Penn St
+1374,SMU,SMU,SMU,SMU
+1386,St Joseph's PA,Saint Joseph's,Saint Joseph's,St Joseph's PA
+1391,Stetson,Stetson,Stetson,Stetson
+1408,Tulane,Tulane,Tulane,Tulane
+1409,Tulsa,Tulsa,Tulsa,Tulsa
+1413,UC Davis,UC Davis,UC Davis,UC Davis
+1419,ULM,Louisiana Monroe,Louisiana Monroe,ULM
+1436,Vermont,Vermont,Vermont,Vermont
+1471,UC San Diego,UC San Diego,UC San Diego,UC San Diego
+1115,Ark Pine Bluff,Arkansas Pine Bluff,Arkansas Pine Bluff,Ark Pine Bluff
+1166,Creighton,Creighton,Creighton,Creighton
 1181,Duke,Duke,Duke,Duke
-1195,Fairleigh Dickinson,Fairleigh Dickinson,Fairleigh Dickinson,Fairleigh Dickinson
-1196,FL Atlantic,Florida Atlantic,Florida Atlantic,Florida Atlantic
-1199,Florida,Florida,Florida,Florida
-1203,Fresno St,Fresno St.,Fresno St.,Fresno St
-1207,George Mason,George Mason,George Mason,George Mason
-1210,George Washington,George Washington,George Washington,George Washington
-1211,Georgetown,Georgetown,Georgetown,Georgetown
-1212,Georgia,Georgia,Georgia,Georgia
-1214,Georgia Tech,Georgia Tech,Georgia Tech,Georgia Tech
-1218,Gonzaga,Gonzaga,Gonzaga,Gonzaga
-1222,Grand Canyon,Grand Canyon,Grand Canyon,Grand Canyon
-1228,Hampton,Hampton,Hampton,Hampton
-1234,Hawaii,Hawaii,Hawaii,Hawaii
-1242,Holy Cross,Holy Cross,Holy Cross,Holy Cross
-1243,Houston,Houston,Houston,Houston
-1245,Howard,Howard,Howard,Howard
-1246,Idaho,Idaho,Idaho,Idaho
-1251,Illinois,Illinois,Illinois,Illinois
-1252,Illinois St,Illinois St.,Illinois St.,Illinois St
-1254,Indiana,Indiana,Indiana,Indiana
-1256,Iona,Iona,Iona,Iona
-1257,Iowa,Iowa,Iowa,Iowa
-1258,Iowa St,Iowa St.,Iowa St.,Iowa St
-1260,Jackson St,Jackson St.,Jackson St.,Jackson St
-1261,James Madison,James Madison,James Madison,James Madison
-1266,Kansas,Kansas,Kansas,Kansas
-1267,Kansas St,Kansas St.,Kansas St.,Kansas St
-1268,Kennesaw St,Kennesaw St.,Kennesaw St.,Kennesaw St
-1269,Kent St,Kent St.,Kent St.,Kent St
-1272,Kentucky,Kentucky,Kentucky,Kentucky
-1276,La Salle,La Salle,La Salle,La Salle
-1277,Lafayette,Lafayette,Lafayette,Lafayette
-1280,Lehigh,Lehigh,Lehigh,Lehigh
-1285,Lipscomb,Lipscomb,Lipscomb,Lipscomb
-1288,Long Beach St,Long Beach St.,Long Beach St.,Long Beach St
-1290,Long Island,LIU,LIU,LIU
-1291,Longwood,Longwood,Longwood,Longwood
-1292,Louisiana Lafayette,Louisiana,Louisiana,Louisiana
-1295,Louisiana Tech,Louisiana Tech,Louisiana Tech,Louisiana Tech
-1296,Louisville,Louisville,Louisville,Louisville
-1299,Loyola Chicago,Loyola Chicago,Loyola Chicago,Loyola Chicago
-1301,Loyola Marymount,Loyola Marymount,Loyola Marymount,Loyola Marymount
-1305,Manhattan,Manhattan,Manhattan,Manhattan
-1309,Marquette,Marquette,Marquette,Marquette
-1311,Maryland,Maryland,Maryland,Maryland
-1314,McNeese St,McNeese St.,McNeese St.,McNeese St
-1316,Memphis,Memphis,Memphis,Memphis
-1318,Mercer,Mercer,Mercer,Mercer
-1320,Miami FL,Miami FL,Miami FL,Miami FL
-1323,Michigan,Michigan,Michigan,Michigan
-1324,Michigan St,Michigan St.,Michigan St.,Michigan St
-1326,Middle Tennessee,Middle Tennessee,Middle Tennessee,Middle Tennessee
-1328,Minnesota,Minnesota,Minnesota,Minnesota
-1329,Mississippi,Ole Miss,Ole Miss,Ole Miss
-1330,Mississippi St,Mississippi St.,Mississippi St.,Mississippi St
-1331,Missouri,Missouri,Missouri,Missouri
-1335,Montana,Montana,Montana,Montana
-1337,Montana St,Montana St.,Montana St.,Montana St
-1338,Morehead St,Morehead St.,Morehead St.,Morehead St
-1341,Mount St Mary's,Mount St. Mary's,Mount St. Mary's,Mount St Mary's
-1344,Murray St,Murray St.,Murray St.,Murray St
-1345,Navy,Navy,Navy,Navy
-1346,NC State,N.C. State,NC State,NC State
-1348,Nebraska,Nebraska,Nebraska,Nebraska
-1350,Nevada,Nevada,Nevada,Nevada
-1352,New Mexico,New Mexico,New Mexico,New Mexico
-1353,New Mexico St,New Mexico St.,New Mexico St.,New Mexico St
-1355,Niagara,Niagara,Niagara,Niagara
-1356,Nicholls St,Nicholls St.,Nicholls St.,Nicholls St
-1358,Norfolk St,Norfolk St.,Norfolk St.,Norfolk St
-1361,North Carolina,North Carolina,North Carolina,North Carolina
-1362,North Carolina A&T,North Carolina A&T,North Carolina A&T,North Carolina A&T
-1363,North Carolina St,N.C. State,NC State,NC State
-1364,North Dakota St,North Dakota St.,North Dakota St.,North Dakota St
-1367,Northern Iowa,Northern Iowa,Northern Iowa,Northern Iowa
-1368,Northern Kentucky,Northern Kentucky,Northern Kentucky,Northern Kentucky
-1371,Northwestern,Northwestern,Northwestern,Northwestern
-1374,Notre Dame,Notre Dame,Notre Dame,Notre Dame
-1376,Oakland,Oakland,Oakland,Oakland
-1377,Ohio,Ohio,Ohio,Ohio
-1378,Ohio St,Ohio St.,Ohio St.,Ohio St
-1382,Oklahoma,Oklahoma,Oklahoma,Oklahoma
-1383,Oklahoma St,Oklahoma St.,Oklahoma St.,Oklahoma St
-1385,Old Dominion,Old Dominion,Old Dominion,Old Dominion
-1386,Oral Roberts,Oral Roberts,Oral Roberts,Oral Roberts
-1388,Oregon,Oregon,Oregon,Oregon
-1389,Oregon St,Oregon St.,Oregon St.,Oregon St
-1392,Pacific,Pacific,Pacific,Pacific
-1393,Penn,Penn,Pennsylvania,Penn
-1395,Penn St,Penn St.,Penn St.,Penn St
-1396,Pepperdine,Pepperdine,Pepperdine,Pepperdine
-1397,Pittsburgh,Pittsburgh,Pittsburgh,Pittsburgh
-1399,Portland St,Portland St.,Portland St.,Portland St
-1400,Princeton,Princeton,Princeton,Princeton
-1401,Providence,Providence,Providence,Providence
-1403,Purdue,Purdue,Purdue,Purdue
-1411,Richmond,Richmond,Richmond,Richmond
-1412,Rider,Rider,Rider,Rider
-1413,Robert Morris,Robert Morris,Robert Morris,Robert Morris
-1415,Rutgers,Rutgers,Rutgers,Rutgers
-1417,Sacramento St,Sacramento St.,Sacramento St.,Sacramento St
-1418,Sacred Heart,Sacred Heart,Sacred Heart,Sacred Heart
-1420,Sam Houston St,Sam Houston St.,Sam Houston St.,Sam Houston St
-1421,Samford,Samford,Samford,Samford
-1422,San Diego,San Diego,San Diego,San Diego
-1423,San Diego St,San Diego St.,San Diego St.,San Diego St
-1424,San Francisco,San Francisco,San Francisco,San Francisco
-1425,Santa Clara,Santa Clara,Santa Clara,Santa Clara
-1427,Seton Hall,Seton Hall,Seton Hall,Seton Hall
-1428,Siena,Siena,Siena,Siena
-1430,South Alabama,South Alabama,South Alabama,South Alabama
-1432,South Carolina,South Carolina,South Carolina,South Carolina
-1433,South Dakota St,South Dakota St.,South Dakota St.,South Dakota St
-1435,Southeast Missouri St,Southeast Missouri St.,Southeast Missouri St.,Southeast Missouri St
-1437,Southern,Southern,Southern University,Southern
-1438,Southern California,USC,USC,USC
-1439,Southern Illinois,Southern Illinois,Southern Illinois,Southern Illinois
-1443,Southern Miss,Southern Miss,Southern Miss,Southern Miss
-1446,St Bonaventure,St. Bonaventure,St. Bonaventure,St Bonaventure
-1448,St Joseph's,Saint Joseph's,Saint Joseph's,St Joseph's
-1449,St Louis,Saint Louis,Saint Louis,St Louis
-1450,St Mary's CA,Saint Mary's,Saint Mary's,Saint Mary's
-1452,St Peter's,Saint Peter's,Saint Peter's,Saint Peter's
-1453,Stanford,Stanford,Stanford,Stanford
-1455,Stephen F. Austin,Stephen F. Austin,Stephen F. Austin,Stephen F Austin
-1456,Stetson,Stetson,Stetson,Stetson
-1458,Syracuse,Syracuse,Syracuse,Syracuse
-1460,Temple,Temple,Temple,Temple
-1461,Tennessee,Tennessee,Tennessee,Tennessee
-1462,Tennessee St,Tennessee St.,Tennessee St.,Tennessee St
-1463,Texas,Texas,Texas,Texas
-1464,Texas A&M,Texas A&M,Texas A&M,Texas A&M
-1466,Texas Southern,Texas Southern,Texas Southern,Texas Southern
-1467,Texas Tech,Texas Tech,Texas Tech,Texas Tech
-1473,Troy,Troy,Troy,Troy
-1474,Tulsa,Tulsa,Tulsa,Tulsa
-1477,UAB,UAB,UAB,UAB
-1437,UC Davis,UC Davis,UC Davis,UC Davis
-1478,UC Irvine,UC Irvine,UC Irvine,UC Irvine
-1480,UC Santa Barbara,UC Santa Barbara,UCSB,UC Santa Barbara
-1437,UNC Asheville,UNC Asheville,UNC Asheville,UNC Asheville
-1437,UNC Greensboro,UNC Greensboro,UNC Greensboro,UNC Greensboro
-1437,UNC Wilmington,UNC Wilmington,UNC Wilmington,UNC Wilmington
-1437,UTEP,UTEP,UTEP,UTEP
-1437,UT Arlington,UT Arlington,UT Arlington,UT Arlington
-1437,UMBC,UMBC,UMBC,UMBC
-1490,Utah,Utah,Utah,Utah
-1491,Utah St,Utah St.,Utah St.,Utah St
-1493,UTSA,UTSA,UTSA,UTSA
-1496,Valparaiso,Valparaiso,Valparaiso,Valparaiso
-1497,Vanderbilt,Vanderbilt,Vanderbilt,Vanderbilt
-1498,VCU,VCU,VCU,VCU
-1499,Vermont,Vermont,Vermont,Vermont
-1500,Villanova,Villanova,Villanova,Villanova
-1501,Virginia,Virginia,Virginia,Virginia
-1502,Virginia Tech,Virginia Tech,Virginia Tech,Virginia Tech
-1503,Wagner,Wagner,Wagner,Wagner
-1504,Wake Forest,Wake Forest,Wake Forest,Wake Forest
-1506,Washington,Washington,Washington,Washington
-1507,Washington St,Washington St.,Washington St.,Washington St
-1508,Weber St,Weber St.,Weber St.,Weber St
-1509,West Virginia,West Virginia,West Virginia,West Virginia
-1511,Western Kentucky,Western Kentucky,Western Kentucky,Western Kentucky
-1513,Western Michigan,Western Michigan,Western Michigan,Western Michigan
-1515,Wichita St,Wichita St.,Wichita St.,Wichita St
-1517,William & Mary,William & Mary,William & Mary,William & Mary
-1519,Winthrop,Winthrop,Winthrop,Winthrop
-1520,Wisconsin,Wisconsin,Wisconsin,Wisconsin
-1521,Wofford,Wofford,Wofford,Wofford
-1523,Wright St,Wright St.,Wright St.,Wright St
-1524,Wyoming,Wyoming,Wyoming,Wyoming
-1525,Xavier,Xavier,Xavier,Xavier
-1526,Yale,Yale,Yale,Yale
+1211,Gonzaga,Gonzaga,Gonzaga,Gonzaga
+1232,Indiana St,Indiana,Indiana,Indiana St
+1239,Jacksonville,Jacksonville,Jacksonville,Jacksonville
+1241,James Madison,James Madison,James Madison,James Madison
+1242,Kansas,Kansas City,Kansas St.,Kansas
+1257,Louisville,Louisville,Louisville,Louisville
+1264,Manhattan,Manhattan,Manhattan,Manhattan
+1285,Montana,Montana,Montana,Montana
+1287,Morehead St,Morehead St.,Morehead St.,Morehead St
+1293,Murray St,Murray St.,Murray St.,Murray St
+1314,North Carolina,North Carolina A&T,North Carolina,North Carolina
+1344,Providence,Providence,Providence,Providence
+1375,South Alabama,Alabama,Alabama,South Alabama
+1379,Southern Miss,Southern,Southern,Southern Miss
+1393,Syracuse,Syracuse,Syracuse,Syracuse
+1447,Wagner,Wagner,Wagner,Wagner
+1450,Washington St,Washington,Washington,Washington St
+1461,Wyoming,Wyoming,Wyoming,Wyoming
+1135,Brown,Brown,Brown,Brown
+1179,Drake,Drake,Drake,Drake
+1194,FL Atlantic,Florida Atlantic,Florida Atlantic,FL Atlantic
+1204,Ga Southern,Southern,Southern,Ga Southern
+1205,Gardner Webb,Gardner Webb,Gardner Webb,Gardner Webb
+1217,Harvard,Harvard,Harvard,Harvard
+1234,Iowa,Iowa,Iowa,Iowa
+1266,Marquette,Marquette,Marquette,Marquette
+1288,Morgan St,Morgan St.,Morgan St.,Morgan St
+1318,Northeastern,Northeastern,Northeastern,Northeastern
+1330,Old Dominion,Old Dominion,Old Dominion,Old Dominion
+1390,Stanford,Stanford,Stanford,Stanford
+1400,Texas,Texas,Texas,Texas
+1406,Towson,Towson,Towson,Towson
+1428,Utah,Southern Utah,Southern Utah,Utah
+1441,W Carolina,South Carolina,South Carolina,W Carolina
+1459,Wofford,Wofford,Wofford,Wofford
+1123,Ball St,Ball St.,Ball St.,Ball St
+1129,Boise St,Boise St.,Boise St.,Boise St
+1131,Boston Univ,Boston University,Boston University,Boston Univ
+1161,Colorado St,Colorado,Colorado,Colorado St
+1168,CS Fullerton,Cal St. Fullerton,Cal St. Fullerton,CS Fullerton
+1174,Delaware,Delaware St.,Delaware St.,Delaware
+1191,Evansville,Evansville,Evansville,Evansville
+1201,Fresno St,Fresno St.,Fresno St.,Fresno St
+1246,Kentucky,Western Kentucky,Kentucky,Kentucky
+1249,Lamar,Lamar,Lamar,Lamar
+1301,NC State,N.C. State,N.C. State,NC State
+1331,Oral Roberts,Oral Roberts,Oral Roberts,Oral Roberts
+1340,Portland St,Portland,Portland,Portland St
+1341,Prairie View,Prairie View A&M,Prairie View A&M,Prairie View
+1356,S Illinois,Illinois,Illinois,S Illinois
+1384,St Francis PA,St. Francis PA,St. Francis PA,St Francis PA
+1407,Troy,Troy,Troy,Troy
+1412,UAB,UAB,UAB,UAB
+1417,UCLA,UCLA,UCLA,UCLA
+1431,UTEP,UTEP,UTEP,UTEP
+1110,American Univ,American,American,American Univ
+1125,Belmont,Belmont,Belmont,Belmont
+1145,Canisius,Canisius,Canisius,Canisius
+1157,Coastal Car,Coastal Carolina,Coastal Carolina,Coastal Car
+1160,Colorado,Colorado St.,Colorado,Colorado
+1167,CS Bakersfield,Cal St. Bakersfield,Cal St. Bakersfield,CS Bakersfield
+1184,E Kentucky,Kentucky,Kentucky,E Kentucky
+1196,Florida,Florida Atlantic,Florida Atlantic,Florida
+1252,Lipscomb,Lipscomb,Lipscomb,Lipscomb
+1298,Navy,Navy,Navy,Navy
+1321,Northwestern,Northwestern,Northwestern St.,Northwestern
+1333,Oregon St,Oregon,Oregon,Oregon St
+1365,Santa Clara,Santa Clara,Santa Clara,Santa Clara
+1368,SE Louisiana,Louisiana,Louisiana,SE Louisiana
+1382,St Bonaventure,St. Bonaventure,St. Bonaventure,St Bonaventure
+1394,TAM C. Christi,Texas A&M Corpus Chris,Texas A&M Corpus Chris,TAM C. Christi
+1418,Louisiana,Louisiana Tech,Louisiana Lafayette,Louisiana
+1433,VCU,VCU,VCU,VCU
+1437,Villanova,Villanova,Villanova,Villanova
+1462,Xavier,Xavier,Xavier,Xavier
+1122,Austin Peay,Austin Peay,Austin Peay,Austin Peay
+1143,California,California,California,California
+1177,DePaul,DePaul,DePaul,DePaul
+1180,Drexel,Drexel,Drexel,Drexel
+1187,East Carolina,East Carolina,East Carolina,East Carolina
+1202,Furman,Furman,Furman,Furman
+1207,Georgetown,Georgetown,Georgetown,Georgetown
+1224,Howard,Howard,Howard,Howard
+1228,Illinois,Northern Illinois,Northern Illinois,Illinois
+1272,Memphis,Memphis,Memphis,Memphis
+1274,Miami FL,Miami FL,Miami FL,Miami FL
+1326,Ohio St,Ohio,Ohio,Ohio St
+1332,Oregon,Oregon St.,Oregon,Oregon
+1338,Pittsburgh,Pittsburgh,Pittsburgh,Pittsburgh
+1345,Purdue,Purdue Fort Wayne,Purdue Fort Wayne,Purdue
+1351,Rider,Rider,Rider,Rider
+1371,Seton Hall,Seton Hall,Seton Hall,Seton Hall
+1427,UT San Antonio,UTSA,UTSA,UT San Antonio
+1105,Alabama A&M,Alabama,Alabama,Alabama A&M
+1130,Boston College,Boston College,Boston College,Boston College
+1133,Bradley,Bradley,Bradley,Bradley
+1140,BYU,BYU,BYU,BYU
+1193,Fairfield,Fairfield,Fairfield,Fairfield
+1213,Grand Canyon,Grand Canyon,Grand Canyon,Grand Canyon
+1247,La Salle,La Salle,La Salle,La Salle
+1248,Lafayette,Lafayette,Louisiana Lafayette,Lafayette
+1251,Liberty,Liberty,Liberty,Liberty
+1286,Montana St,Montana,Montana,Montana St
+1290,MS Valley St,Mississippi Valley St.,Mississippi Valley St.,MS Valley St
+1292,MTSU,Middle Tennessee,Middle Tennessee,MTSU
+1307,New Mexico,New Mexico,New Mexico,New Mexico
+1339,Portland,Portland,Portland,Portland
+1395,TCU,TCU,TCU,TCU
+1397,Tennessee,Tennessee,Tennessee,Tennessee
+1103,Akron,Akron,Akron,Akron
+1136,Bryant,Bryant,Bryant,Bryant
+1155,Clemson,Clemson,Clemson,Clemson
+1192,F Dickinson,Fairleigh Dickinson,Fairleigh Dickinson,F Dickinson
+1284,Monmouth NJ,Monmouth,Monmouth,Monmouth NJ
+1323,Notre Dame,Notre Dame,Notre Dame,Notre Dame
+1328,Oklahoma,Oklahoma St.,Oklahoma,Oklahoma
+1329,Oklahoma St,Oklahoma,Oklahoma,Oklahoma St
+1335,Penn,Penn,Penn St.,Penn
+1350,Richmond,Richmond,Richmond,Richmond
+1359,Samford,Samford,Samford,Samford
+1373,Siena,Siena,Siena,Siena
+1385,St John's,St. John's,St. John's,St John's
+1449,Washington,George Washington,Washington St.,Washington
+1451,Weber St,Weber St.,Weber St.,Weber St
+1144,Campbell,Campbell,Campbell,Campbell
+1173,Dayton,Dayton,Dayton,Dayton
+1190,ETSU,East Tennessee St.,East Tennessee St.,ETSU
+1212,Grambling,Grambling St.,Grambling St.,Grambling
+1221,Holy Cross,Holy Cross,Holy Cross,Holy Cross
+1253,Long Beach St,Long Beach St.,Long Beach St.,Long Beach St
+1291,Mt St Mary's,Mount St. Mary's,Mount St. Mary's,Mt St Mary's
+1299,NC A&T,North Carolina A&T,North Carolina A&T,NC A&T
+1308,New Mexico St,New Mexico,New Mexico,New Mexico St
+1310,Niagara,Niagara,Niagara,Niagara
+1311,Nicholls St,Nicholls,Nicholls St.,Nicholls St
+1355,S Dakota St,South Dakota St.,South Dakota St.,S Dakota St
+1362,San Francisco,San Francisco,San Francisco,San Francisco
+1372,SF Austin,Stephen F. Austin,Stephen F. Austin,SF Austin
+1414,UC Irvine,UC Irvine,UC Irvine,UC Irvine
+1426,UT Arlington,UT Arlington,UT Arlington,UT Arlington
+1444,W Michigan,Michigan,Michigan,W Michigan
+1452,West Virginia,Virginia,West Virginia,West Virginia
+1101,Abilene Chr,Abilene Christian,Abilene Christian,Abilene Chr
+1106,Alabama St,Alabama,Alabama,Alabama St
+1107,SUNY Albany,Albany,Albany,SUNY Albany
+1111,Appalachian St,Appalachian St.,Appalachian St.,Appalachian St
+1142,Cal Poly,Cal Poly,Cal Poly,Cal Poly
+1158,Col Charleston,Charleston,Charleston,Col Charleston
+1163,Connecticut,Central Connecticut,Central Connecticut,Connecticut
+1186,E Washington,Washington,Washington,E Washington
+1195,FGCU,Florida Gulf Coast,Florida Gulf Coast,FGCU
+1203,G Washington,Washington,Washington,G Washington
+1209,Georgia St,Georgia,Georgia,Georgia St
+1210,Georgia Tech,Georgia Tech,Georgia Tech,Georgia Tech
+1220,Hofstra,Hofstra,Hofstra,Hofstra
+1222,Houston,Houston,Houston,Houston
+1225,Idaho,Idaho,Idaho,Idaho
+1229,Illinois St,Illinois,Illinois,Illinois St
+1231,Indiana,Indiana St.,Indiana St.,Indiana
+1304,Nebraska,Nebraska,Nebraska,Nebraska
+1319,Northern Arizona,Northern Arizona,Northern Arizona,Northern Arizona
+1322,Northwestern LA,Northwestern,Northwestern,Northwestern LA
+1334,Pacific,Pacific,Pacific,Pacific
+1347,Radford,Radford,Radford,Radford
+1387,St Louis,Saint Louis,Saint Louis,St Louis
+1401,Texas A&M,Texas,Texas,Texas A&M
+1425,USC,USC Upstate,USC Upstate,USC
+1429,Utah St,Utah,Utah,Utah St
+1455,Wichita St,Wichita St.,Wichita St.,Wichita St
+1138,Buffalo,Buffalo,Buffalo,Buffalo
+1165,Cornell,Cornell,Cornell,Cornell
+1172,Davidson,Davidson,Davidson,Davidson
+1188,SIUE,SIU Edwardsville,SIU Edwardsville,SIUE
+1206,George Mason,George Mason,George Mason,George Mason
+1233,Iona,Iona,Iona,Iona
+1240,Jacksonville St,Jacksonville,Jacksonville,Jacksonville St
+1245,Kent,Kent St.,Kent St.,Kent
+1256,Louisiana Tech,Louisiana Tech,Louisiana Tech,Louisiana Tech
+1313,Norfolk St,Norfolk St.,Norfolk St.,Norfolk St
+1315,North Dakota,North Dakota,North Dakota,North Dakota
+1325,Ohio,Ohio St.,Ohio St.,Ohio
+1343,Princeton,Princeton,Princeton,Princeton
+1348,Rhode Island,Rhode Island,Rhode Island,Rhode Island
+1354,S Carolina St,South Carolina St.,South Carolina St.,S Carolina St
+1360,San Diego,UC San Diego,UC San Diego,San Diego
+1361,San Diego St,San Diego,San Diego,San Diego St
+1364,UC Santa Barbara,UC Santa Barbara,UC Santa Barbara,UC Santa Barbara
+1376,South Carolina,South Carolina,South Carolina,South Carolina
+1416,UCF,UCF,UCF,UCF
+1423,UNC Wilmington,UNC Wilmington,UNC Wilmington,UNC Wilmington
+1424,UNLV,UNLV,UNLV,UNLV
+1102,Air Force,Air Force,Air Force,Air Force
+1104,Alabama,Alabama,Alabama,Alabama
+1114,Ark Little Rock,Little Rock,Little Rock,Ark Little Rock
+1116,Arkansas,Central Arkansas,Central Arkansas,Arkansas
+1124,Baylor,Baylor,Baylor,Baylor
+1175,Delaware St,Delaware,Delaware,Delaware St
+1197,Florida A&M,Florida,Florida,Florida A&M
+1226,Idaho St,Idaho,Idaho,Idaho St
+1227,IL Chicago,Loyola Chicago,Loyola Chicago,IL Chicago
+1244,Kennesaw,Kennesaw St.,Kennesaw St.,Kennesaw
+1259,Loyola MD,Loyola MD,Loyola MD,Loyola MD
+1269,Massachusetts,Massachusetts,Massachusetts,Massachusetts
+1280,Mississippi St,Mississippi,Mississippi,Mississippi St
+1352,Robert Morris,Robert Morris,Robert Morris,Robert Morris
+1358,Sam Houston St,Houston,Houston,Sam Houston St
+1378,South Florida,Florida,Florida,South Florida
+1388,St Mary's CA,Saint Mary's,Saint Mary's,St Mary's CA
+1420,UMBC,UMBC,UMBC,UMBC
+1434,Valparaiso,Valparaiso,Valparaiso,Valparaiso
+1435,Vanderbilt,Vanderbilt,Vanderbilt,Vanderbilt
+1454,WI Milwaukee,Milwaukee,Milwaukee,WI Milwaukee
+1112,Arizona,Northern Arizona,Northern Arizona,Arizona
+1113,Arizona St,Arizona,Arizona,Arizona St
+1127,Binghamton,Binghamton,Binghamton,Binghamton
+1137,Bucknell,Bucknell,Bucknell,Bucknell
+1153,Cincinnati,Cincinnati,Cincinnati,Cincinnati
+1164,Coppin St,Coppin St.,Coppin St.,Coppin St
+1169,CS Northridge,Cal St. Northridge,Cal St. Northridge,CS Northridge
+1243,Kansas St,Kansas,Kansas,Kansas St
+1278,Minnesota,Minnesota,Minnesota,Minnesota
+1283,Missouri St,Missouri,Missouri,Missouri St
+1320,Northern Iowa,Iowa,Iowa,Northern Iowa
+1337,Pepperdine,Pepperdine,Pepperdine,Pepperdine
+1363,San Jose St,San Jose St.,San Jose St.,San Jose St
+1392,Stony Brook,Stony Brook,Stony Brook,Stony Brook
+1398,Tennessee St,Tennessee,Tennessee,Tennessee St
+1403,Texas Tech,Texas,Texas,Texas Tech
+1411,TX Southern,Southern,Southern,TX Southern
+1421,UNC Asheville,UNC Asheville,UNC Asheville,UNC Asheville
+1443,WKU,Western Kentucky,Western Kentucky,WKU
+1448,Wake Forest,Wake Forest,Wake Forest,Wake Forest
+1458,Wisconsin,Wisconsin,Wisconsin,Wisconsin

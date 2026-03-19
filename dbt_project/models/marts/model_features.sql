@@ -101,3 +101,5 @@ left join four_factors ffa
     on m.team_a_id = ffa.kaggle_team_id and m.season = ffa.season
 left join four_factors ffb
     on m.team_b_id = ffb.kaggle_team_id and m.season = ffb.season
+where ka.adj_em is not null
+  and kb.adj_em is not null

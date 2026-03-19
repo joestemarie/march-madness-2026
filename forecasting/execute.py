@@ -163,6 +163,42 @@ def main():
         print("No orders could be resolved to market tickers.")
         return
 
+    # Filter out markets where we already have positions or filled orders
+    client = KalshiClient()
+    held_tickers = set()
+
+    # Check executed orders
+    try:
+        executed = client.get_orders(status="executed")
+        for o in executed.get("orders", []):
+            filled = float(o.get("fill_count_fp", "0"))
+            if filled > 0:
+                held_tickers.add(o["ticker"])
+    except Exception as e:
+        logger.warning("Could not fetch executed orders: %s", e)
+
+    # Check resting orders (already in the book)
+    try:
+        resting = client.get_orders(status="resting")
+        for o in resting.get("orders", []):
+            held_tickers.add(o["ticker"])
+    except Exception as e:
+        logger.warning("Could not fetch resting orders: %s", e)
+
+    if held_tickers:
+        before = len(orders)
+        already = [o for o in orders if o["ticker"] in held_tickers]
+        orders = [o for o in orders if o["ticker"] not in held_tickers]
+        if already:
+            print(f"\nSkipping {len(already)} markets with existing positions/orders:")
+            for o in already:
+                print(f"  - {o['ticker']} ({o['bet_team']})")
+            print(f"Remaining: {len(orders)} new orders")
+
+    if not orders:
+        print("\nAll bets already placed. Nothing to do.")
+        return
+
     if not args.live:
         # ── Dry run ──
         print("\n*** DRY RUN — no orders will be placed ***")
@@ -173,8 +209,6 @@ def main():
 
     # ── Live execution ──
     print("\n*** LIVE MODE — orders will be placed on Kalshi ***")
-
-    client = KalshiClient()
 
     # Check balance
     balance_resp = client.get_balance()

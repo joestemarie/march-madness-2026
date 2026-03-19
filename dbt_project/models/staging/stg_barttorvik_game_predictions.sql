@@ -2,23 +2,23 @@ with source as (
     select * from {{ source('raw', 'barttorvik_game_predictions') }}
 )
 
-, crosswalk_team as (
-    select * from {{ ref('team_crosswalk') }}
-)
-
-, crosswalk_opp as (
+, crosswalk as (
     select * from {{ ref('team_crosswalk') }}
 )
 
 select
-    s.*
+    s.team as team_name
+    , s.season
     , cast(s.season as integer) as season_int
-    , ct.canonical_name as team_canonical_name
-    , ct.kaggle_team_id as team_kaggle_id
-    , co.canonical_name as opponent_canonical_name
-    , co.kaggle_team_id as opponent_kaggle_id
+    , s.game_day_num
+    , s.location
+    , s.tempo
+    , s.ppp
+    , s.pts
+    , s.win_per
+    , s.did_win
+    , cw.canonical_name
+    , cw.kaggle_team_id
 from source s
-left join crosswalk_team ct
-    on s.team_name = ct.barttorvik_team_name
-left join crosswalk_opp co
-    on s.opponent_name = co.barttorvik_team_name
+left join crosswalk cw
+    on s.team = cw.barttorvik_team_name

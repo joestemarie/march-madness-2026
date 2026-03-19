@@ -1,4 +1,4 @@
-.PHONY: setup download-kaggle ingest ingest-kaggle ingest-kenpom ingest-barttorvik ingest-kalshi crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean train calibrate evaluate model predict edges allocate forecast execute
+.PHONY: setup download-kaggle ingest ingest-kaggle ingest-kenpom ingest-barttorvik ingest-kalshi crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean train calibrate evaluate model predict edges allocate forecast execute status
 
 # -- Setup --
 setup:
@@ -86,6 +86,15 @@ execute:
 
 execute-live:
 	uv run python forecasting/execute.py --live
+
+status:
+	uv run python forecasting/status.py
+
+reprice:
+	uv run python forecasting/status.py --reprice
+
+fill-now:
+	uv run python forecasting/status.py --at-ask
 
 # -- Cleanup --
 clean:
