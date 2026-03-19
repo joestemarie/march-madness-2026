@@ -14,6 +14,7 @@ import argparse
 import logging
 import math
 import sys
+import time
 from pathlib import Path
 
 import pandas as pd
@@ -251,6 +252,7 @@ def main():
                 print("  Skipped.")
                 continue
 
+        time.sleep(0.15)  # stay under 20 req/sec rate limit
         try:
             result = client.create_order(
                 ticker=order["ticker"],

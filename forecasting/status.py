@@ -9,6 +9,7 @@ Usage:
 
 import argparse
 import logging
+import time
 from pathlib import Path
 
 import httpx
@@ -148,6 +149,7 @@ def main():
                 print(f"  Cancelled {o['ticker']}")
             except Exception as e:
                 print(f"  Failed to cancel {o['ticker']}: {e}")
+            time.sleep(0.1)
 
     if to_reprice:
         print(f"\nRe-placing {len(to_reprice)} orders at current {price_label}...")
@@ -162,6 +164,7 @@ def main():
             if remaining <= 0:
                 print(f"  {ticker}: fully filled, nothing to re-place")
                 continue
+            time.sleep(0.15)  # stay under 20 req/sec rate limit
             try:
                 result = client.create_order(
                     ticker=ticker,
