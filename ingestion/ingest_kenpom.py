@@ -33,13 +33,27 @@ REQUEST_DELAY = 0.5  # seconds between requests
 
 
 def kenpom_get(endpoint: str, params: dict | None = None) -> list[dict] | dict:
-    """Make an authenticated GET request to the KenPom API."""
+    """Make an authenticated GET request to the KenPom API.
+
+    NOTE: The base URL and endpoint paths below are guesses from the KenPom
+    registration page. If you get 403 errors, check the API docs that came
+    with your key and update BASE_URL / endpoint paths accordingly.
+    """
     if not KENPOM_API_KEY:
         raise RuntimeError("KENPOM_API_KEY not set. Add it to your .env file.")
     headers = {"Authorization": f"Bearer {KENPOM_API_KEY}"}
     url = f"{BASE_URL}/{endpoint}"
     logger.info("GET %s params=%s", url, params)
     resp = httpx.get(url, headers=headers, params=params, timeout=30)
+    if resp.status_code == 403:
+        logger.error(
+            "403 Forbidden from KenPom API. Check that:\n"
+            "  1. KENPOM_API_KEY in .env is correct\n"
+            "  2. BASE_URL (%s) matches your API docs\n"
+            "  3. The endpoint path '%s' is correct\n"
+            "  4. Your API subscription is active",
+            BASE_URL, endpoint,
+        )
     resp.raise_for_status()
     return resp.json()
 
