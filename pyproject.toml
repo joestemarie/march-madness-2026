@@ -13,6 +13,7 @@ dependencies = [
     "rapidfuzz>=3.0",
     "dbt-duckdb>=1.7",
     "sqlfluff>=3.0",
+    "kaggle>=1.6",
 ]
 
 [build-system]

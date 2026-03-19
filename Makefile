@@ -1,8 +1,13 @@
-.PHONY: setup ingest ingest-kaggle ingest-kenpom ingest-barttorvik crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean
+.PHONY: setup download-kaggle ingest ingest-kaggle ingest-kenpom ingest-barttorvik crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean
 
 # -- Setup --
 setup:
 	uv sync
+
+# -- Download --
+download-kaggle:
+	uv run kaggle competitions download -c march-machine-learning-mania-2025 -p ingestion/kaggle_data/
+	unzip -o ingestion/kaggle_data/*.zip -d ingestion/kaggle_data/
 
 # -- Ingestion (run in order) --
 ingest: ingest-kaggle ingest-kenpom ingest-barttorvik
