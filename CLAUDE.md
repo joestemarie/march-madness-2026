@@ -34,4 +34,5 @@ make clean                    # Delete DuckDB + dbt artifacts
 ## SQL Style
 - **Leading commas** — commas go at the start of the line, not the end
 - **No terminal CTE** — the final `select` should be inline, not `select * from some_cte`
-- Run `make lint` to check; CI enforces both rules
+- Enforced by SQLFluff (config in `.sqlfluff`)
+- `make lint` to check, `make lint-fix` to auto-fix; CI enforces on PRs

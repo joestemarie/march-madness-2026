@@ -17,6 +17,10 @@ dependencies = [
 dbt = [
     "dbt-duckdb>=1.7",
 ]
+lint = [
+    "sqlfluff>=3.0",
+    "sqlfluff-templater-dbt>=3.0",
+]
 
 [build-system]
 requires = ["hatchling"]
