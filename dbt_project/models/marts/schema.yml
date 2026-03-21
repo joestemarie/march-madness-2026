@@ -1,0 +1,45 @@
+version: 2
+
+models:
+  - name: tournament_matchups
+    description: "One row per tournament game, team_a is always the higher seed"
+    columns:
+      - name: season
+        tests:
+          - not_null
+      - name: team_a_id
+        tests:
+          - not_null
+      - name: team_b_id
+        tests:
+          - not_null
+      - name: team_a_seed
+        tests:
+          - not_null
+      - name: team_b_seed
+        tests:
+          - not_null
+      - name: team_a_won
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]
+
+  - name: model_features
+    description: "One row per R1/R2 matchup with KenPom differentials for modeling"
+    columns:
+      - name: season
+        tests:
+          - not_null
+      - name: round
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2]
+      - name: team_a_won
+        tests:
+          - not_null
+      - name: adj_em_diff
+        description: "Primary feature: adjusted efficiency margin differential"
+      - name: seed_diff
+        description: "Seed differential (team_b_seed - team_a_seed, always >= 0)"

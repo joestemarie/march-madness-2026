@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: kenpom_ratings
+      - name: kenpom_four_factors
+      - name: barttorvik_ratings
+      - name: barttorvik_game_predictions
+      - name: kaggle_tourney_results
+      - name: kaggle_seeds
+      - name: kaggle_teams

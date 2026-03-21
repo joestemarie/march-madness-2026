@@ -1,0 +1,33 @@
+# Environment
+.env
+
+# Database
+data/*.duckdb
+data/*.duckdb.wal
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+
+# Model artifacts
+modeling/artifacts/
+
+# dbt
+dbt_project/target/
+dbt_project/logs/
+dbt_project/dbt_packages/
+dbt_project/.user.yml
+
+# Kaggle data files
+ingestion/kaggle_data/
+
+# Kalshi private key
+*.pem
+
+# Forecasting artifacts
+forecasting/artifacts/
+
+# OS
+.DS_Store
