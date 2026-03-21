@@ -1,4 +1,4 @@
-.PHONY: setup download-kaggle ingest ingest-kaggle ingest-kenpom ingest-barttorvik ingest-kalshi crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean train calibrate evaluate model predict edges allocate forecast execute status
+.PHONY: setup download-kaggle ingest ingest-kaggle ingest-kenpom ingest-barttorvik ingest-kalshi crosswalk dbt dbt-seed dbt-build dbt-test dbt-run lint check clean train calibrate evaluate model predict predict-r2 edges allocate forecast execute execute-breaks odds-check status
 
 # -- Setup --
 setup:
@@ -73,19 +73,28 @@ model: train calibrate evaluate
 predict:
 	uv run python forecasting/predict.py --active-only
 
+predict-r2:
+	uv run python forecasting/predict.py --active-only --round 2
+
 edges:
 	uv run python forecasting/edge.py
 
 allocate:
 	uv run python forecasting/allocate.py
 
-forecast: ingest-kalshi predict edges allocate
+forecast: ingest-kalshi predict-r2 edges allocate
 
 execute:
 	uv run python forecasting/execute.py
 
 execute-live:
 	uv run python forecasting/execute.py --live
+
+execute-breaks:
+	uv run python forecasting/execute.py --breaks-only --live
+
+odds-check:
+	set -a && [ -f .env ] && . ./.env; set +a && uv run python forecasting/odds_check.py
 
 status:
 	uv run python forecasting/status.py

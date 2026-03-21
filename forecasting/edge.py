@@ -34,8 +34,8 @@ def compute_edges(df: pd.DataFrame, threshold: float) -> pd.DataFrame:
         edge_a = model_a - kalshi_a
         edge_b = model_b - kalshi_b
 
-        # Pick the side with the bigger edge
-        if abs(edge_a) >= abs(edge_b):
+        # Pick the side with the bigger edge (positive or negative — we want max edge)
+        if edge_a >= edge_b:
             bet_team = r["team_a_kalshi"]
             bet_side = "team_a"
             model_prob = model_a

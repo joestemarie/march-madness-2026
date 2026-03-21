@@ -125,13 +125,13 @@ def main():
 
     # Determine which orders to act on
     if args.at_ask:
-        to_cancel = orders
-        to_reprice = orders
+        to_cancel = [o for o in orders if o.get("action") == "buy"]
+        to_reprice = [o for o in orders if o.get("action") == "buy"]
         price_key = "yes_ask"
         price_label = "ask"
     elif args.reprice:
-        to_cancel = stale
-        to_reprice = stale
+        to_cancel = [o for o in stale if o.get("action") == "buy"]
+        to_reprice = [o for o in stale if o.get("action") == "buy"]
         price_key = "yes_bid"
         price_label = "bid"
     elif args.cancel:

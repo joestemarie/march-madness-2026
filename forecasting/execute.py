@@ -8,6 +8,7 @@ Usage:
     uv run python forecasting/execute.py                    # dry run (default)
     uv run python forecasting/execute.py --live             # place real orders
     uv run python forecasting/execute.py --live --confirm   # skip per-order prompts
+    uv run python forecasting/execute.py --breaks-only --live  # place breaks for prior buys
 """
 
 import argparse
@@ -60,6 +61,7 @@ def compute_order_params(row: pd.Series) -> dict:
         "bet_team": row["bet_team"],
         "side": "yes",
         "action": "buy",
+        "order_type": "buy",
         "count": count,
         "yes_price_dollars": price,
         "bet_amount": bet_amount,
@@ -107,13 +109,86 @@ def resolve_tickers(orders: list[dict], conn) -> list[dict]:
     return resolved
 
 
+def round_to_nickel(price: float) -> float:
+    """Round price to nearest $0.05, capped at $0.75."""
+    return min(0.75, round(round(price / 0.05) * 0.05, 2))
+
+
+def compute_break_orders(buy_order: dict) -> list[dict]:
+    """Compute Tier 1 / Tier 2 sell break orders for a given buy order.
+
+    Break tiers by entry price:
+      < $0.05:       tier1 = 4x entry,   tier2 = model_prob
+      $0.05–$0.15:   tier1 = 3x entry,   tier2 = model_prob
+      $0.15–$0.30:   tier1 = 2.5x entry, tier2 = model_prob
+      > $0.30:       no breaks
+
+    Collapses to single break if model_prob <= 1.5 * tier1_price.
+    Tier 1: 40% of buy count (min 1). Tier 2: 30% of buy count (min 1).
+    All prices rounded to nearest $0.05, capped at $0.75.
+    """
+    entry = float(buy_order["yes_price_dollars"])
+    model_prob = float(buy_order["model_prob"])
+    count = buy_order["count"]
+
+    if entry > 0.30:
+        return []
+
+    if entry < 0.05:
+        tier1_raw = 4 * entry
+    elif entry <= 0.15:
+        tier1_raw = 3 * entry
+    else:
+        tier1_raw = 2.5 * entry
+
+    tier1_price = round_to_nickel(tier1_raw)
+    tier2_price = round_to_nickel(model_prob)
+
+    tier1_count = max(1, math.floor(count * 0.40))
+    tier2_count = max(1, math.floor(count * 0.30))
+
+    base = {
+        "ticker": buy_order["ticker"],
+        "bet_team": buy_order["bet_team"],
+        "side": "yes",
+        "action": "sell",
+        "edge": buy_order["edge"],
+        "model_prob": model_prob,
+        "entry_price": entry,
+    }
+
+    # Collapse to single break if tier2 target is not meaningfully above tier1
+    if model_prob <= 1.5 * tier1_price:
+        return [{
+            **base,
+            "order_type": "break_tier1",
+            "count": tier1_count,
+            "yes_price_dollars": f"{tier1_price:.2f}",
+        }]
+
+    return [
+        {
+            **base,
+            "order_type": "break_tier1",
+            "count": tier1_count,
+            "yes_price_dollars": f"{tier1_price:.2f}",
+        },
+        {
+            **base,
+            "order_type": "break_tier2",
+            "count": tier2_count,
+            "yes_price_dollars": f"{tier2_price:.2f}",
+        },
+    ]
+
+
 def print_order_summary(orders: list[dict], balance_cents: int | None = None):
-    """Print a summary of planned orders."""
+    """Print a summary of planned buy orders."""
     total_cost = sum(o["count"] * float(o["yes_price_dollars"]) for o in orders)
     total_contracts = sum(o["count"] for o in orders)
 
     print(f"\n{'='*95}")
-    print("ORDER SUMMARY")
+    print("BUY ORDER SUMMARY")
     print(f"{'='*95}")
     if balance_cents is not None:
         print(f"Account balance: ${balance_cents / 100:.2f}")
@@ -133,6 +208,28 @@ def print_order_summary(orders: list[dict], balance_cents: int | None = None):
         )
 
 
+def print_break_summary(break_orders: list[dict]):
+    """Print a summary of planned sell break orders."""
+    if not break_orders:
+        print("\n(No break orders — all entry prices > $0.30)")
+        return
+
+    print(f"\n{'='*95}")
+    print("SELL BREAK ORDER SUMMARY")
+    print(f"{'='*95}")
+    print(f"Total break orders: {len(break_orders)}")
+    print()
+    print(f"{'Ticker':<45} {'Team':<18} {'Type':<12} {'Qty':>4} {'Entry':>7} {'Break':>7}")
+    print(f"{'-'*45} {'-'*18} {'-'*12} {'-'*4} {'-'*7} {'-'*7}")
+    for o in break_orders:
+        print(
+            f"{o['ticker']:<45} {o['bet_team']:<18} "
+            f"{o['order_type']:<12} {o['count']:>4} "
+            f"${o['entry_price']:>5.2f} "
+            f"${float(o['yes_price_dollars']):>5.2f}"
+        )
+
+
 def main():
     parser = argparse.ArgumentParser(description="Execute bets on Kalshi")
     parser.add_argument("--year", type=int, default=2026)
@@ -140,8 +237,161 @@ def main():
                         help="Actually place orders (default: dry run)")
     parser.add_argument("--confirm", action="store_true",
                         help="Skip per-order confirmation prompts (use with --live)")
+    parser.add_argument("--breaks-only", action="store_true",
+                        help="Skip buy orders; place break orders for prior buys from execution log")
     args = parser.parse_args()
 
+    # ── Breaks-only mode: load tickers from prior execution log ──
+    if args.breaks_only:
+        log_path = ARTIFACTS_DIR / f"execution_log_{args.year}.csv"
+        if not log_path.exists():
+            print(f"No execution log at {log_path}. Run --live first.")
+            return
+        log_df = pd.read_csv(log_path)
+        # Only process successfully placed buy orders
+        buy_log = log_df[
+            (log_df.get("order_type", pd.Series(["buy"] * len(log_df))) == "buy")
+            & (log_df["status"] != "error")
+        ] if "order_type" in log_df.columns else log_df[log_df["status"] != "error"]
+
+        if buy_log.empty:
+            print("No successful buy orders found in execution log.")
+            return
+
+        # Reconstruct minimal order dicts for break computation
+        # We need ticker, count, yes_price_dollars (entry), model_prob, edge, bet_team
+        orders_for_breaks = []
+        bet_path = ARTIFACTS_DIR / f"bet_sheet_{args.year}.csv"
+        bets = pd.read_csv(bet_path) if bet_path.exists() else None
+
+        for _, row in buy_log.iterrows():
+            ticker = row["ticker"]
+            count = int(row["count"])
+            price = str(row["price"])
+
+            # Look up model_prob and edge from bet sheet if available
+            model_prob = 0.5
+            edge = 0.0
+            bet_team = row.get("bet_team", "")
+            if bets is not None:
+                match = bets[bets["bet_team"] == bet_team]
+                if not match.empty:
+                    model_prob = float(match.iloc[0]["model_prob"])
+                    edge = float(match.iloc[0]["edge"])
+
+            orders_for_breaks.append({
+                "ticker": ticker,
+                "bet_team": bet_team,
+                "count": count,
+                "yes_price_dollars": price,
+                "model_prob": model_prob,
+                "edge": edge,
+                "order_type": "buy",
+            })
+
+        all_breaks = []
+        for o in orders_for_breaks:
+            all_breaks.extend(compute_break_orders(o))
+
+        if not all_breaks:
+            print("No break orders to place (all entry prices > $0.30).")
+            return
+
+        # Check for existing resting sell orders
+        client = KalshiClient()
+        resting_sell_tickers = set()
+        try:
+            resting = client.get_orders(status="resting")
+            for o in resting.get("orders", []):
+                if o.get("action") == "sell":
+                    resting_sell_tickers.add(o["ticker"])
+        except Exception as e:
+            logger.warning("Could not fetch resting orders: %s", e)
+
+        if resting_sell_tickers:
+            skipped = [o for o in all_breaks if o["ticker"] in resting_sell_tickers]
+            all_breaks = [o for o in all_breaks if o["ticker"] not in resting_sell_tickers]
+            if skipped:
+                print(f"\nSkipping {len(skipped)} break orders with existing resting sells:")
+                for o in skipped:
+                    print(f"  - {o['ticker']} ({o['bet_team']}) {o['order_type']}")
+
+        print_break_summary(all_breaks)
+
+        if not args.live:
+            print("\n*** DRY RUN — no orders will be placed ***")
+            print("\nTo place these break orders, run:")
+            print("  uv run python forecasting/execute.py --breaks-only --live")
+            return
+
+        print("\n*** LIVE MODE — break orders will be placed on Kalshi ***")
+        if not args.confirm:
+            resp = input(f"\nPlace {len(all_breaks)} sell break orders? [y/N] ")
+            if resp.lower() != "y":
+                print("Aborted.")
+                return
+
+        break_results = []
+        for i, order in enumerate(all_breaks, 1):
+            if not args.confirm:
+                resp = input(
+                    f"\n[{i}/{len(all_breaks)}] Sell {order['count']}x YES "
+                    f"{order['bet_team']} @ ${float(order['yes_price_dollars']):.2f} "
+                    f"({order['order_type']})? [y/N/q] "
+                )
+                if resp.lower() == "q":
+                    print("Stopped.")
+                    break
+                if resp.lower() != "y":
+                    print("  Skipped.")
+                    continue
+
+            time.sleep(0.15)
+            try:
+                result = client.create_order(
+                    ticker=order["ticker"],
+                    side=order["side"],
+                    action=order["action"],
+                    count=order["count"],
+                    yes_price_dollars=order["yes_price_dollars"],
+                )
+                order_data = result.get("order", {})
+                status = order_data.get("status", "unknown")
+                order_id = order_data.get("order_id", "")
+                print(f"  ✓ {order['order_type']} {order_id}: status={status}")
+                break_results.append({
+                    "ticker": order["ticker"],
+                    "bet_team": order["bet_team"],
+                    "order_id": order_id,
+                    "status": status,
+                    "count": order["count"],
+                    "price": order["yes_price_dollars"],
+                    "fill_count": "0",
+                    "order_type": order["order_type"],
+                })
+            except Exception as e:
+                print(f"  ✗ FAILED: {e}")
+                break_results.append({
+                    "ticker": order["ticker"],
+                    "bet_team": order["bet_team"],
+                    "order_id": "",
+                    "status": "error",
+                    "count": order["count"],
+                    "price": order["yes_price_dollars"],
+                    "fill_count": "0",
+                    "order_type": order["order_type"],
+                    "error": str(e),
+                })
+
+        if break_results:
+            log_path = ARTIFACTS_DIR / f"execution_log_{args.year}.csv"
+            existing = pd.read_csv(log_path) if log_path.exists() else pd.DataFrame()
+            appended = pd.concat([existing, pd.DataFrame(break_results)], ignore_index=True)
+            appended.to_csv(log_path, index=False)
+            print(f"\nAppended {len(break_results)} break order(s) to {log_path}")
+        return
+
+    # ── Normal mode: buy orders + break orders ──
     bet_path = ARTIFACTS_DIR / f"bet_sheet_{args.year}.csv"
     if not bet_path.exists():
         print(f"No bet sheet at {bet_path}. Run allocate.py first.")
@@ -164,6 +414,11 @@ def main():
         print("No orders could be resolved to market tickers.")
         return
 
+    # Compute break orders for each buy
+    all_break_orders = []
+    for order in orders:
+        all_break_orders.extend(compute_break_orders(order))
+
     # Filter out markets where we already have positions or filled orders
     client = KalshiClient()
     held_tickers = set()
@@ -178,16 +433,19 @@ def main():
     except Exception as e:
         logger.warning("Could not fetch executed orders: %s", e)
 
-    # Check resting orders (already in the book)
+    # Check resting buy orders (already in the book)
+    resting_sell_tickers = set()
     try:
         resting = client.get_orders(status="resting")
         for o in resting.get("orders", []):
-            held_tickers.add(o["ticker"])
+            if o.get("action") == "sell":
+                resting_sell_tickers.add(o["ticker"])
+            else:
+                held_tickers.add(o["ticker"])
     except Exception as e:
         logger.warning("Could not fetch resting orders: %s", e)
 
     if held_tickers:
-        before = len(orders)
         already = [o for o in orders if o["ticker"] in held_tickers]
         orders = [o for o in orders if o["ticker"] not in held_tickers]
         if already:
@@ -195,6 +453,12 @@ def main():
             for o in already:
                 print(f"  - {o['ticker']} ({o['bet_team']})")
             print(f"Remaining: {len(orders)} new orders")
+
+    # Filter break orders: skip tickers with existing resting sells
+    all_break_orders = [o for o in all_break_orders if o["ticker"] not in resting_sell_tickers]
+    # Only keep breaks for tickers we're actually buying this run
+    buy_tickers_this_run = {o["ticker"] for o in orders}
+    break_orders_this_run = [o for o in all_break_orders if o["ticker"] in buy_tickers_this_run]
 
     if not orders:
         print("\nAll bets already placed. Nothing to do.")
@@ -204,6 +468,7 @@ def main():
         # ── Dry run ──
         print("\n*** DRY RUN — no orders will be placed ***")
         print_order_summary(orders)
+        print_break_summary(break_orders_this_run)
         print(f"\nTo place these orders for real, run:")
         print(f"  uv run python forecasting/execute.py --live")
         return
@@ -229,9 +494,10 @@ def main():
             return
 
     print_order_summary(orders, balance_cents)
+    print_break_summary(break_orders_this_run)
 
     if not args.confirm:
-        resp = input(f"\nPlace {len(orders)} orders? [y/N] ")
+        resp = input(f"\nPlace {len(orders)} buy + {len(break_orders_this_run)} break orders? [y/N] ")
         if resp.lower() != "y":
             print("Aborted.")
             return
@@ -253,6 +519,7 @@ def main():
                 continue
 
         time.sleep(0.15)  # stay under 20 req/sec rate limit
+        buy_succeeded = False
         try:
             result = client.create_order(
                 ticker=order["ticker"],
@@ -274,7 +541,9 @@ def main():
                 "count": order["count"],
                 "price": order["yes_price_dollars"],
                 "fill_count": fill_count,
+                "order_type": "buy",
             })
+            buy_succeeded = True
         except Exception as e:
             print(f"  ✗ FAILED: {e}")
             results.append({
@@ -285,8 +554,50 @@ def main():
                 "count": order["count"],
                 "price": order["yes_price_dollars"],
                 "fill_count": "0",
+                "order_type": "buy",
                 "error": str(e),
             })
+
+        # Place break orders immediately after successful buy
+        if buy_succeeded:
+            ticker_breaks = [b for b in break_orders_this_run if b["ticker"] == order["ticker"]]
+            for brk in ticker_breaks:
+                time.sleep(0.15)
+                try:
+                    result = client.create_order(
+                        ticker=brk["ticker"],
+                        side=brk["side"],
+                        action=brk["action"],
+                        count=brk["count"],
+                        yes_price_dollars=brk["yes_price_dollars"],
+                    )
+                    brk_data = result.get("order", {})
+                    brk_status = brk_data.get("status", "unknown")
+                    brk_id = brk_data.get("order_id", "")
+                    print(f"    ↳ {brk['order_type']} {brk_id}: sell {brk['count']}x @ ${float(brk['yes_price_dollars']):.2f} status={brk_status}")
+                    results.append({
+                        "ticker": brk["ticker"],
+                        "bet_team": brk["bet_team"],
+                        "order_id": brk_id,
+                        "status": brk_status,
+                        "count": brk["count"],
+                        "price": brk["yes_price_dollars"],
+                        "fill_count": "0",
+                        "order_type": brk["order_type"],
+                    })
+                except Exception as e:
+                    print(f"    ↳ {brk['order_type']} FAILED: {e}")
+                    results.append({
+                        "ticker": brk["ticker"],
+                        "bet_team": brk["bet_team"],
+                        "order_id": "",
+                        "status": "error",
+                        "count": brk["count"],
+                        "price": brk["yes_price_dollars"],
+                        "fill_count": "0",
+                        "order_type": brk["order_type"],
+                        "error": str(e),
+                    })
 
     # Save results
     if results:
